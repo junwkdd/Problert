@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity" >
+
+    <fragment
+        android:layout_height="572dp"
+        android:layout_width="383dp"
+        tools:context="com.example.user.Problert.MapsActivity"
+        android:layout_margin="15dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        tools:ignore="DuplicateIds" />
+
+    <ImageView
+        android:layout_height="132dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/Topbar"
+        android:src="@drawable/bar1"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/myLocation"
+        android:text="현재 위치"
+        android:onClick="onLastLocatinButtonClicked"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="600dp"
+        tools:ignore="OnClick" />
+
+    <Button android:background="@drawable/pen"
+        android:layout_height="83dp"
+        android:layout_width="83dp"
+        android:id="@+id/writepage"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="540dp"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/zoom_in"
+        android:text="+"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="490dp"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/zoom_out"
+        android:text="-"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="540dp"/>
+
+</FrameLayout>
