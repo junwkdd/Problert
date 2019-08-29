@@ -44,8 +44,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
                             .title("내 위치")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin)));
-
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
+                            .snippet("여의도 한강 치맥 합시다."));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
