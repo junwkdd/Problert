@@ -12,8 +12,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "google_maps_key", "AIzaSyBD6TlE76BuYPKfrwSqq5L-DWYLH7Q94qc"
         }
 

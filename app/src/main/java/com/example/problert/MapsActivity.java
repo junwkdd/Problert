@@ -31,8 +31,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
 
-    Marker selectedMarker;
-
     public Marker addmarking(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
@@ -49,6 +47,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .title("내 위치")
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
                             .snippet("여의도 한강 치맥 합시다."));
+
+
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
@@ -58,21 +58,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
-    public void changeSelectedMarker(Marker marker) {
-        if (selectedMarker != null){
-            addmarking();
-            selectedMarker.remove();
-        }
-
-        if (marker != null) {
-            selectedMarker = addmarking();
-            marker.remove();
-        }
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        LatLng seoul = new LatLng(35.14291, 126.799890);
+        mMap.addMarker(new MarkerOptions().position(seoul).title("내 위치"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -115,6 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) {
+        mMap.clear();
         addmarking();
     }
 
