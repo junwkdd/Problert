@@ -122,6 +122,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.d("lat", lat+"");
                     Log.d("lag", lag+"");
 
+<<<<<<< HEAD
+    public void writebutton(View view){
+        Intent intentw = new Intent(this, MainActivity.class);
+        startActivity(intentw);
+=======
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
@@ -149,5 +154,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
       intentw.putExtra("lat", lat);
       intentw.putExtra("lag", lag);
       startActivity(intentw);
+>>>>>>> b5287f19a165691b2c3dca364c2ea3409730838f
     }
 }

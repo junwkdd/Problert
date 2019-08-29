@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 HashMap<String, Object> input = new HashMap<>();
                 input.put("title", title.getText());
                 input.put("description", description.getText());
