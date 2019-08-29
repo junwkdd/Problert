@@ -37,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
         Button back_btn = (Button) findViewById(R.id.back_btn);
         Intent intent = getIntent();
 
-        double lat = intent.getDoubleExtra("lat", 0.00);
-        double lag = intent.getDoubleExtra("lag", 0.00);
+        final double lat = intent.getDoubleExtra("lat", 0.00);
+        final double lng = intent.getDoubleExtra("lng", 0.00);
+        Double.toString(lat);
+        Double.toString(lng);
 
         Log.d("lat:", lat+"");
-        Log.d("lag:", lag+"");
+        Log.d("lng:", lng+"");
 
 
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, Object> input = new HashMap<>();
                 input.put("title", title.getText());
                 input.put("description", description.getText());
+                input.put("lat", lat);
+                input.put("lng", lng);
 
                 retrofitExService.postData(input).enqueue(new Callback<Data>() {
                     @Override
@@ -70,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                             if (body != null) {
                                 Log.d("data.getTitle()", body.getTitle()+"");
                                 Log.d("data.getDescription()", body.getDescription()+"");
+                                Log.d("data.lat", body.getLat()+"");
+                                Log.d("data.lng", body.getLng()+"");
                                 Log.e("postData end", "======================================");
                             }
                         }

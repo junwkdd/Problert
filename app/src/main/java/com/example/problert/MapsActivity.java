@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -25,15 +28,20 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-//lat 위도 lag 경도
+//lat 위도 lng 경도
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
     private double lat;
-    private double lag;
+    private double lng;
 
-    public void addmarking(){
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(RetrofitService.URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    public void addmarking() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
             return;
@@ -44,8 +52,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (location != null) {
                     // 현재 위치
                     lat = location.getLatitude();
-                    lag = location.getLongitude();
+                    lng = location.getLongitude();
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    retrofitService.getData("1").enqueue(new Callback<Data>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
+                            if (response.isSuccessful()) {
+                                Data body = response.body();
+                                if (body != null) {
+                                    Log.d("data.getUserId()", body.getUserId() + "");
+                                    Log.d("data.getId()", body.getId() + "");
+                                    Log.d("data.getTitle()", body.getTitle());
+                                    Log.d("data.getBody()", body.getBody());
+                                    Log.e("getData end", "======================================");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
+
+                        }
+                    });
+
                     mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
                             .title("내 위치")
@@ -116,10 +146,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void writebutton(View view){
         Intent intentw = new Intent(this, MainActivity.class);
         Log.d("lat", lat+"");
-        Log.d("lag", lag+"");
+        Log.d("lng", lng+"");
 
         intentw.putExtra("lat", lat);
-        intentw.putExtra("lag", lag);
+        intentw.putExtra("lng", lng);
+
         startActivity(intentw);
     }
 }
