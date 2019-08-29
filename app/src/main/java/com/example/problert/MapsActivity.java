@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
+    private double lat;
+    private double lag;
 
     public void addmarking(){
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -40,6 +43,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if (location != null) {
                     // 현재 위치
+                    lat = location.getLatitude();
+                    lag = location.getLongitude();
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
@@ -113,6 +118,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void writebutton(View view){
         Intent intentw = new Intent(this, MainActivity.class);
+        Log.d("lat", lat+"");
+        Log.d("lag", lag+"");
+
+        intentw.putExtra("lat", lat);
+        intentw.putExtra("lag", lag);
         startActivity(intentw);
     }
 }
