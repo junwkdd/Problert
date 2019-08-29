@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.HashMap;
 
@@ -21,23 +22,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        setContentView(R.layout.send_message_test);
+        setContentView(R.layout.activity_main);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        final RetrofitService retrofitExService = retrofit.create(RetrofitService.class);
-        Button button = (Button) findViewById(R.id.button);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        final RetrofitService retrofitExService = retrofit.create(RetrofitService.class);
+        final EditText title = (EditText)findViewById(R.id.title);
+        final EditText description = (EditText)findViewById(R.id.description);
+        ImageButton submit_button = (ImageButton) findViewById(R.id.submit_button);
+
+        submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("button cliked", "succesfully");
                 HashMap<String, Object> input = new HashMap<>();
-                input.put("userId", 1);
-                input.put("title", "title");
-                input.put("description", "description");
+                input.put("title", title);
+                input.put("description", description);
 
                 retrofitExService.postData(input).enqueue(new Callback<Data>() {
                     @Override
