@@ -87,7 +87,7 @@
             android:layout_width="66dp"
             android:layout_height="62dp"
             android:layout_marginLeft="340dp"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="419dp"
             android:background="@drawable/send"
             app:srcCompat="@drawable/send" />
 
