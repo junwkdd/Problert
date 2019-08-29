@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-//lat 위도 lag 경도
+//lat 위도 lng 경도
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -99,6 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) {
+
         addmarking();
     }
 
@@ -112,4 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intentw = new Intent(this, MainActivity.class);
         startActivity(intentw);
     }
+
+
 }
+
