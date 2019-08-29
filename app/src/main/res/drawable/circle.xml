@@ -9,7 +9,6 @@
         tools:ignore="ResourceCycle">
         <shape
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:shape="oval">
             <solid android:color="#aaef69" />
         </shape>

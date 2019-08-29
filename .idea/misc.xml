@@ -6,10 +6,14 @@
     </configurations>
   </component>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="JDK" project-jdk-type="JavaSDK">
 =======
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android API 28 Platform (3)" project-jdk-type="Android SDK">
 >>>>>>> 147f066fe9211e88b6a23821a5d85fd4762c4f4d
+=======
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android API 28 Platform (3)" project-jdk-type="Android SDK">
+>>>>>>> f989fac91a6de3f27443c71d9e9b70d9c09b9f5a
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

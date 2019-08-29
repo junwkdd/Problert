@@ -35,7 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_margin="10dp"
-        android:hint="제목" />
+        android:background="@drawable/edittext_rounddesu"
+        android:hint="   제목" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +48,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="483dp">
-
 
         <Button
             android:id="@+id/imageButton9"
@@ -65,15 +65,24 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="60dp"
             android:layout_marginRight="10dp"
-            android:hint="내용을 입력해주세요" />
+            android:background="@drawable/edittext_rounddesu"
+            android:hint="  내용을 입력해주세요" />
 
         <Spinner
             android:id="@+id/spinner3"
             android:layout_width="283dp"
             android:layout_height="45dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edittext_rounddesu"/>
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_marginLeft="260dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="▼" />
 
         <Button
             android:id="@+id/submit_button"
