@@ -11,10 +11,18 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        debug {
+            // 개발용 KEY
+            resValue "string", "google_maps_api_key", "개발용 API KEY"
         }
+        release {
+            // 배포용 KEY
+            resValue "string", "google_maps_api_key", "배포용 API KEY"
+        }
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
     }
 }
 
