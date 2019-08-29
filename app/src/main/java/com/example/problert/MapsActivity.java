@@ -31,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
 
+    Marker selectedMarker;
 
     public Marker addmarking(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -57,14 +58,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
+    public void changeSelectedMarker(Marker marker) {
+        if (selectedMarker != null){
+            addmarking();
+            selectedMarker.remove();
+        }
+
+        if (marker != null) {
+            selectedMarker = addmarking();
+            marker.remove();
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        LatLng seoul = new LatLng(35.14291, 126.799890);
-        mMap.addMarker(new MarkerOptions().position(seoul).title("내 위치"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -77,10 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
         addmarking();
-
     }
 
     /**
@@ -101,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch (requestCode) {
             case REQUEST_CODE_PERMISSIONS:
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
                 }
                 return;
         }
@@ -110,7 +115,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) {
-        mMap.clear();
         addmarking();
     }
 
