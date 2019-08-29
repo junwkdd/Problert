@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -22,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 //lat 위도 lng 경도
@@ -29,29 +34,80 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
+    private double lat;
+    private double lng;
 
-    public void addmarking(){
+<<<<<<< HEAD
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(RetrofitService.URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    public void addmarking() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+=======
+    Marker selectedMarker;
+
+    public Marker addmarking(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+>>>>>>> 402c57549f0d12017c161009fdcb6d66eaa484cf
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
-            return;
+            return null;
         }
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
                     // 현재 위치
+                    lat = location.getLatitude();
+                    lng = location.getLongitude();
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    retrofitService.getData("1").enqueue(new Callback<Data>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
+                            if (response.isSuccessful()) {
+                                Data body = response.body();
+                                if (body != null) {
+                                    Log.d("data.getUserId()", body.getUserId() + "");
+                                    Log.d("data.getId()", body.getId() + "");
+                                    Log.d("data.getTitle()", body.getTitle());
+                                    Log.d("data.getBody()", body.getBody());
+                                    Log.e("getData end", "======================================");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
+
+                        }
+                    });
+
                     mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
                             .title("내 위치")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin)));
-
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
+                            .snippet("여의도 한강 치맥 합시다."));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
                 }
             }
         });
+        return null;
+    }
+
+    public void changeSelectedMarker(Marker marker) {
+        if (selectedMarker != null){
+            addmarking();
+            selectedMarker.remove();
+        }
+
+        if (marker != null) {
+            selectedMarker = addmarking();
+            marker.remove();
+        }
     }
 
     @Override
@@ -111,6 +167,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void writebutton(View view){
         Intent intentw = new Intent(this, MainActivity.class);
+        Log.d("lat", lat+"");
+        Log.d("lng", lng+"");
+
+        intentw.putExtra("lat", lat);
+        intentw.putExtra("lng", lng);
+
         startActivity(intentw);
     }
 
