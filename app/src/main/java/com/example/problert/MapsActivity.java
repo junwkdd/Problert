@@ -22,10 +22,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
@@ -61,6 +62,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap = googleMap;
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title("GSM");
+        markerOptions.snippet("치맥");
 
         LatLng seoul = new LatLng(35.14291, 126.799890);
         mMap.addMarker(new MarkerOptions().position(seoul).title("내 위치").icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin)));
