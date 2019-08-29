@@ -35,18 +35,28 @@ public class MainActivity extends AppCompatActivity {
         final EditText description = (EditText)findViewById(R.id.description);
         Button submit_button = (Button) findViewById(R.id.submit_button);
         Button back_btn = (Button) findViewById(R.id.back_btn);
+        Intent intent = getIntent();
+
+        double lat = intent.getDoubleExtra("lat", 0.00);
+        double lag = intent.getDoubleExtra("lag", 0.00);
+
+        Log.d("lat:", lat+"");
+        Log.d("lag:", lag+"");
+
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//                startActivity(intent);
+                onBackPressed();
             }
         });
 
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 HashMap<String, Object> input = new HashMap<>();
                 input.put("title", title.getText());
                 input.put("description", description.getText());

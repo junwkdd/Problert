@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,8 +31,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
+    private double lat;
+    private double lag;
+
+    public void addmarking(){
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    // 현재 위치
+
+                    lat = location.getLatitude();
+                    lag = location.getLongitude();
+                    LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.addMarker(new MarkerOptions()
+                            .position(myLocation)
+                            .title("내 위치")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin)));
+
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                    // 카메라 줌
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+                }
+            }
+        });
+    }
 
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -41,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        addmarking();
     }
 
     /**
@@ -54,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
 
 
+<<<<<<< HEAD
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // 권한 체크
@@ -65,12 +102,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title("GSM");
         markerOptions.snippet("치맥");
+=======
+>>>>>>> 3f4f4d2df50b6af9b3d0ff124bc8dd07333481e1
 
-        LatLng seoul = new LatLng(35.14291, 126.799890);
-        mMap.addMarker(new MarkerOptions().position(seoul).title("내 위치").icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -86,31 +120,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) {
-        // 권한 체크
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
-            return;
-        }
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    // 현재 위치
-                    LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addMarker(new MarkerOptions()
-                            .position(myLocation)
-                            .title("내 위치")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin)));
-
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-//qwe
-                    // 카메라 줌
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-                }
-            }
-        });
+        addmarking();
     }
 
 //    public  void address(){
@@ -121,6 +134,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void writebutton(View view){
         Intent intentw = new Intent(this, MainActivity.class);
+
+        Log.d("lat", lat+"");
+        Log.d("lag", lag+"");
+
+        intentw.putExtra("lat", lat);
+        intentw.putExtra("lag", lag);
         startActivity(intentw);
     }
 
