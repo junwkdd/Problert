@@ -31,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
 
+    Marker selectedMarker;
 
     public Marker addmarking(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -55,6 +56,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         return null;
+    }
+
+    public void changeSelectedMarker(Marker marker) {
+        if (selectedMarker != null){
+            addmarking();
+            selectedMarker.remove();
+        }
+
+        if (marker != null) {
+            selectedMarker = addmarking();
+            marker.remove();
+        }
     }
 
     @Override
