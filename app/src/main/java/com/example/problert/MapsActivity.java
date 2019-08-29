@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 //lat 위도 lag 경도
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -71,13 +72,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 if (body != null) {
                                     Log.d("data.lat", body.getLat()+"");
                                     Log.d("data.lng", body.getLng()+"");
+                                    Log.d("res.body()", new Gson().toJson(response.body())+"");
+                                    // 호승이가 보내주는 데이터를 받아봅시다!!!!!
                                     Log.e("getData end", "======================================");
+                                } else {
+                                    Log.d("body", "is empty");
                                 }
+                            } else {
+                                Log.d("res", response.headers()+"");
                             }
                         }
 
                         @Override
                         public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
+                            Log.d("dd:", t.getLocalizedMessage());
                             Log.e("getData failed", "======================================");
                         }
                     });
