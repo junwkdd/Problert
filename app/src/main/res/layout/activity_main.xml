@@ -10,8 +10,7 @@
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/Topbar"
@@ -68,7 +67,6 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/edittext_rounddesu"
             android:hint="  내용을 입력해주세요" />
-
 
         <Spinner
             android:id="@+id/spinner3"
