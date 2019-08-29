@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        final RetrofitService retrofitExService = retrofit.create(RetrofitService.class);
+        final RetrofitService retrofitService = retrofit.create(RetrofitService.class);
         final EditText title = (EditText)findViewById(R.id.title);
         final EditText description = (EditText)findViewById(R.id.description);
         Button submit_button = (Button) findViewById(R.id.submit_button);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 input.put("lat", lat);
                 input.put("lng", lng);
 
-                retrofitExService.postData(input).enqueue(new Callback<Data>() {
+                retrofitService.postData(input).enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
                         Log.d("response", response.code()+"");
