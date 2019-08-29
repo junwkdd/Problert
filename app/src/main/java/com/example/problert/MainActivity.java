@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivity(intent);
-
+//                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//                startActivity(intent);
+                onBackPressed();
             }
         });
 
