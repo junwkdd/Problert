@@ -12,7 +12,8 @@ import retrofit2.http.Part;
 
 public interface RetrofitService {
 
-    String URL = "http://donote.co:3000/api/v1/issue";
+//    String URL = "http://donote.co:3000/api/v1/issue";
+    String URL = "http://jsonplaceholder.typicode.com";
 
     /**
      * POST 방식, 주소는 위들과 같음.
