@@ -1,6 +1,7 @@
 package com.example.problert;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -107,4 +108,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    public void writebutton(View view){
+      Intent intentw = new Intent(this, MainActivity.class);
+      startActivity(intentw);
+    }
 }
