@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         double lat = intent.getDoubleExtra("lat", 0.00);
         double lag = intent.getDoubleExtra("lag", 0.00);
 
-        Log.d("lat", lat+"");
-        Log.d("lag", lag+"");
+        Log.d("lat:", lat+"");
+        Log.d("lag:", lag+"");
 
 
         back_btn.setOnClickListener(new View.OnClickListener() {
