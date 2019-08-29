@@ -23,7 +23,8 @@
         android:layout_height="132dp"
         android:layout_width="wrap_content"
         android:id="@+id/Topbar"
-        android:src="@drawable/bar1"/>
+        android:src="@drawable/bar1"
+        android:background="	#41d6b9"/>
 
     <Button
         android:layout_height="wrap_content"
