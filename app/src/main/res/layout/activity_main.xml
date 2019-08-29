@@ -10,8 +10,7 @@
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/Topbar"
@@ -49,13 +48,14 @@
         android:layout_width="match_parent"
         android:layout_height="483dp">
 
-        <ImageButton
-            android:id="@+id/imageButton9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="300dp"
 
-            android:background="@drawable/circle"
+        <Button
+            android:id="@+id/imageButton9"
+            android:layout_width="66dp"
+            android:layout_height="62dp"
+            android:layout_marginLeft="340dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/plus"
             app:srcCompat="@drawable/plus" />
 
         <EditText
@@ -67,7 +67,6 @@
             android:layout_marginRight="10dp"
             android:hint="내용을 입력해주세요" />
 
-
         <Spinner
             android:id="@+id/spinner3"
             android:layout_width="283dp"
@@ -75,13 +74,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp" />
 
-        <ImageButton
+
+        <Button
             android:id="@+id/submit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="300dp"
-            android:layout_marginTop="388dp"
-            android:background="@drawable/circle"
+            android:layout_width="66dp"
+            android:layout_height="62dp"
+            android:layout_marginLeft="340dp"
+            android:layout_marginTop="420dp"
+            android:background="@drawable/send"
             app:srcCompat="@drawable/send" />
 
     </FrameLayout>
