@@ -8,11 +8,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.HashMap;
 
@@ -21,27 +23,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        setContentView(R.layout.send_message_test);
+        setContentView(R.layout.activity_main);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        final RetrofitService retrofitExService = retrofit.create(RetrofitService.class);
-        Button button = (Button) findViewById(R.id.button);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        final RetrofitService retrofitExService = retrofit.create(RetrofitService.class);
+        final EditText title = (EditText)findViewById(R.id.title);
+        final EditText description = (EditText)findViewById(R.id.description);
+        Button submit_button = (Button) findViewById(R.id.submit_button);
+        Button back_btn = (Button) findViewById(R.id.back_btn);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, Object> input = new HashMap<>();
-                input.put("userId", 1);
-                input.put("title", "title");
-                input.put("description", "description");
+                input.put("title", title.getText());
+                input.put("description", description.getText());
 
                 retrofitExService.postData(input).enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
+                        Log.d("response", response.code()+"");
                         if (response.isSuccessful()) {
                             Data body = response.body();
                             if (body != null) {

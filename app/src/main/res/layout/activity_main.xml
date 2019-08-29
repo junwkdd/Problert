@@ -10,8 +10,7 @@
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/Topbar"
@@ -30,20 +29,13 @@
             android:text="" />
     </FrameLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="42dp">
 
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="10dp"
-            android:hint="제목"
-            android:inputType="phone" />
-    </android.support.design.widget.TextInputLayout>
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        android:hint="제목" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,7 +59,7 @@
             app:srcCompat="@drawable/plus" />
 
         <EditText
-            android:id="@+id/body"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_marginLeft="10dp"
@@ -82,8 +74,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp" />
 
+
         <Button
-            android:id="@+id/imageButton7"
+            android:id="@+id/submit_button"
             android:layout_width="66dp"
             android:layout_height="62dp"
             android:layout_marginLeft="340dp"
@@ -93,12 +86,6 @@
 
     </FrameLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="313dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="112dp">
 
-    </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>
