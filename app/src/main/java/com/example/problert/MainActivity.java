@@ -32,19 +32,19 @@ public class MainActivity extends AppCompatActivity {
         final RetrofitService retrofitExService = retrofit.create(RetrofitService.class);
         final EditText title = (EditText)findViewById(R.id.title);
         final EditText description = (EditText)findViewById(R.id.description);
-        ImageButton submit_button = (ImageButton) findViewById(R.id.submit_button);
+        Button submit_button = (Button) findViewById(R.id.submit_button);
 
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("button cliked", "succesfully");
                 HashMap<String, Object> input = new HashMap<>();
-                input.put("title", title);
-                input.put("description", description);
+                input.put("title", title.getText());
+                input.put("description", description.getText());
 
                 retrofitExService.postData(input).enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
+                        Log.d("response", response.code()+"");
                         if (response.isSuccessful()) {
                             Data body = response.body();
                             if (body != null) {
