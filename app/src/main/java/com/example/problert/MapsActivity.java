@@ -123,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(Marker marker){
         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet() + "\n"+marker.getPosition(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
         return true;
     }
 
