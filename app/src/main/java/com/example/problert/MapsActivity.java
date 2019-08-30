@@ -14,11 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,13 +26,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 //lat 위도 lag 경도
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
-    Marker selectedMarker;
+
     private double lat;
     private double lng;
     Retrofit retrofit = new Retrofit.Builder()
@@ -95,18 +96,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         return null;
-    }
-
-    public void changeSelectedMarker(Marker marker) {
-        if (selectedMarker != null){
-            addmarking();
-            selectedMarker.remove();
-        }
-
-        if (marker != null) {
-            selectedMarker = addmarking();
-            marker.remove();
-        }
     }
 
     @Override
