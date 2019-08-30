@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             Data body = response.body();
                             if (body != null) {
-                                Log.d("data.getTitle()", body.getTitle()+"");
-                                Log.d("data.getDescription()", body.getDescription()+"");
-                                Log.d("data.lat", body.getLat()+"");
-                                Log.d("data.lng", body.getLng()+"");
+//                                Log.d("data.getTitle()", body.getTitle()+"");
+//                                Log.d("data.getDescription()", body.getDescription()+"");
+//                                Log.d("data.lat", body.getLat()+"");
+//                                Log.d("data.lng", body.getLng()+"");
                                 Log.e("postData end", "======================================");
                             }
                         }
