@@ -14,12 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.HEAD;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -32,14 +26,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.gson.Gson;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 //lat 위도 lag 경도
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
-    Marker selectedMarker;
+
     private double lat;
     private double lng;
     Retrofit retrofit = new Retrofit.Builder()
@@ -73,25 +72,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 if (body != null) {
                                     Log.d("data.lat", body.getLat()+"");
                                     Log.d("data.lng", body.getLng()+"");
-                                    Log.d("res.body()", new Gson().toJson(response.body())+"");
-                                    // 호승이가 보내주는 데이터를 받아봅시다!!!!!
-                                    Log.e("getData end", "======================================");
-                                } else {
-                                    Log.d("body", "is empty");
-                                }
-                            } else {
-                                Log.d("res", response.headers()+"");
                                     Log.e("getData end", "======================================");
                                 }
                             }
-                        });
+                        }
 
                         @Override
                         public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
-                            Log.d("dd:", t.getLocalizedMessage());
-                         Log.e("getData failed", "======================================");
+                            Log.e("getData failed", "======================================");
                         }
-                    });                    mMap.addMarker(new MarkerOptions()
+                    });
+
+
+                    mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
                             .title("내 위치")
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
@@ -103,18 +96,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         return null;
-    }
-
-    public void changeSelectedMarker(Marker marker) {
-        if (selectedMarker != null){
-            addmarking();
-            selectedMarker.remove();
-        }
-
-        if (marker != null) {
-            selectedMarker = addmarking();
-            marker.remove();
-        }
     }
 
     @Override
@@ -153,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch (requestCode) {
             case REQUEST_CODE_PERMISSIONS:
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
                 }
                 return;
         }
