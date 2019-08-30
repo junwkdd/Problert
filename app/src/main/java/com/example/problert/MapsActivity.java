@@ -65,8 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if (location != null) {
                     // 현재 위치
-                    lat = location.getLatitude();
-                    lng = location.getLongitude();
+                    lat = location.getLatitude()-0.0032711;
+                    lng = location.getLongitude()-0.0690149;
 
                     Double.toString(lat);
                     Double.toString(lng);
@@ -104,10 +104,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     try {
                         mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(lat,lng))
-                                .title("내 위치")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
-                                .snippet(findAddress(lat, lng)));
+                            .position(new LatLng(lat,lng))
+                            .title("내 위치")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
+                            .snippet(findAddress(lat, lng)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -125,14 +125,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
         mMap.addMarker(new MarkerOptions()
-            .position(new LatLng(36.5749321, 128.5038869))
+            .position(new LatLng(36.5749321, 128.5038))
             .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
         );
 
         addmarking();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(1,1)));
         // 카메라 줌
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
     @Override
@@ -191,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) throws IOException {
-        //mMap.clear();
+//        mMap.clear();
         addmarking();
     }
 
