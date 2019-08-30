@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,13 +40,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 //lat 위도 lag 경도
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
     private List<Address> address;
+    private String ad;
     private double lat;
     private double lng;
+
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(RetrofitService.URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -70,7 +71,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Double.toString(lat);
                     Double.toString(lng);
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
+                    try {
+                        ad = findAddress(lat, lng);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     retrofitService.getData(lat + "", lng + "").enqueue(new Callback<Data>() {
                         @Override
@@ -91,12 +96,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
 
-
                     mMap.addMarker(new MarkerOptions()
                             .position(myLocation)
                             .title("내 위치")
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
-                            .snippet("여의도 한강 치맥 합시다."));
+                            .snippet(ad));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
@@ -110,7 +114,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.addMarker(new MarkerOptions().position(new LatLng(35.1426, 126.8)));
+        mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
         addmarking();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker){
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet() + "\n"+marker.getPosition(), Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -152,17 +166,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) throws IOException {
-        TextView whichww = (TextView) findViewById(R.id.whichView);
-        String ad = findAddress(lat, lng);
-        whichww.setText(ad.toString());
+        mMap.clear();
         addmarking();
     }
-
-//    public  void address(){
-//        Context mConText = null;
-//        Geocoder mGeocoder = new Geocoder(mConText);
-//
-//    }
 
     public void writebutton(View view) {
         Intent intentw = new Intent(this, MainActivity.class);
@@ -171,12 +177,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intentw);
     }
 
-    //    public void foundwhich(double lat, double lng){
-//        Geocoder mGeocoder = new Gecoder(mContext);
-//        try{
-//            List<Address>
-//        }
-//    }
     private String findAddress(double a, double b) throws IOException {
         StringBuffer bf = new StringBuffer();
         Geocoder geocoder = new Geocoder(this, Locale.KOREA);
