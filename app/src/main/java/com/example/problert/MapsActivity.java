@@ -71,6 +71,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             if (response.isSuccessful()) {
                                 Data body = response.body();
                                 if (body != null) {
+                                    Toast.makeText(MapsActivity.this, "Done ", Toast.LENGTH_SHORT).show();
+                                    Log.d("data.check", response+"");
                                     Log.d("data.lat", body.getLat()+"");
                                     Log.d("data.lng", body.getLng()+"");
                                     Log.e("getData end", "======================================");
