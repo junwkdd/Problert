@@ -46,10 +46,11 @@
         android:onClick="writebutton" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="qweqwe" />
+        android:id="@+id/whichView"
+        android:layout_width="162dp"
+        android:layout_height="49dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="600dp" />
 
     <!--    <Button-->
 <!--        android:layout_height="wrap_content"-->
