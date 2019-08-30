@@ -131,9 +131,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(marker.getPosition().latitude-0.0007, marker.getPosition().longitude)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, PopupActivity.class);
+        try {
+            intent.putExtra("title", marker.getTitle());
+            intent.putExtra("location", findAddress(marker.getPosition().latitude, marker.getPosition().longitude));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        startActivityForResult(intent, 1);
+        overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
         return true;
     }
 
@@ -145,7 +155,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
