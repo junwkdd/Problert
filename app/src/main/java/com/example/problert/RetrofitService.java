@@ -35,7 +35,7 @@ public interface RetrofitService {
      * @param lat 요청에 필요한 userId
      * @return Data 객체를 JSON 형태로 반환.
      */
-    @GET("/http://donote.co:3000/api/v1/issue/geo/{lat}/{lng}")
+    @GET("http://donote.co:3000/api/v1/issue/geo/{lat}/{lng}")
     Call<Data> getData(@Path("lat") String lat, @Path("lng") String lng);
 
     /**

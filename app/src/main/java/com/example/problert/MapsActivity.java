@@ -135,7 +135,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch (requestCode) {
             case REQUEST_CODE_PERMISSIONS:
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
                 }
                 return;
         }
