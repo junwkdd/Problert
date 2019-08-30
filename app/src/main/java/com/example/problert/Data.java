@@ -1,16 +1,55 @@
 package com.example.problert;
 
 public class Data {
-    private final String title;
-    private final String description;
-    private final String lat;
-    private final String lng;
+//    private final String title;
+//    private final String description;
+//    private final String lat;
+//    private final String lng;
+//
+//    public Data(String title, String description, String lat, String lng) {
+//        this.title = title;
+//        this.description = description;
+//        this.lat = lat;
+//        this.lng = lng;
+//    }
+//
+//    public String getTitle() {
+//        return title;
+//    }
+//
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public String getLat() {
+//        return lat;
+//    }
+//
+//    public String getLng() {
+//        return lng;
+//    }
+    int liked;
+    String issueid;
+    String title;
+    String description;
+    Coordinate coordinate;
+    String createdAt;
 
-    public Data(String title, String description, String lat, String lng) {
+    public Data(int liked, String issueid, String title, String description, Coordinate coordinate, String createdAt) {
+        this.liked = liked;
+        this.issueid = issueid;
         this.title = title;
         this.description = description;
-        this.lat = lat;
-        this.lng = lng;
+        this.coordinate = coordinate;
+        this.createdAt = createdAt;
+    }
+
+    public int getLiked() {
+        return liked;
+    }
+
+    public String getIssueid() {
+        return issueid;
     }
 
     public String getTitle() {
@@ -21,11 +60,12 @@ public class Data {
         return description;
     }
 
-    public String getLat() {
-        return lat;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public String getLng() {
-        return lng;
+    public String getCreatedAt() {
+        return createdAt;
     }
 }
+
