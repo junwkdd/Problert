@@ -45,7 +45,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
     private List<Address> address;
-    private String ad;
     private double lat;
     private double lng;
 
@@ -68,9 +67,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // 현재 위치
                     lat = location.getLatitude();
                     lng = location.getLongitude();
+
                     Double.toString(lat);
                     Double.toString(lng);
-                    LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                     retrofitService.getData(lat+"", lng+"").enqueue(new Callback<List<Data>>() {
                         @Override
@@ -81,10 +80,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     for (int i = 0; i < datas.size(); i++) {
                                         Log.e("data" + i, datas.get(i).getCoordinate().getCoordinates()[0] + "");
                                         try {
-                                            ad = findAddress(lat, lng);
                                             mMap.addMarker(new MarkerOptions()
                                                 .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
                                                 .title(datas.get(i).getTitle())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
                                                 .snippet(findAddress(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
                                             );
                                         } catch (IOException e) {
@@ -105,16 +104,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     try {
                         mMap.addMarker(new MarkerOptions()
-                                .position(myLocation)
+                                .position(new LatLng(lat,lng))
                                 .title("내 위치")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
                                 .snippet(findAddress(lat, lng)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lng)));
                     // 카메라 줌
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f)); //.zoomTo(17.0f));
                 }
             }
         });
@@ -125,8 +124,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+        mMap.addMarker(new MarkerOptions()
+            .position(new LatLng(36.5749321, 128.5038869))
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
+        );
 
         addmarking();
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(1,1)));
+        // 카메라 줌
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
     @Override
@@ -185,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) throws IOException {
-        mMap.clear();
+        //mMap.clear();
         addmarking();
     }
 
