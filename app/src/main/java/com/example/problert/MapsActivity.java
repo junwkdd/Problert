@@ -64,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Double.toString(lng);
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
+                    
                     retrofitService.getData(lat+"", lng+"").enqueue(new Callback<Data>() {
                         @Override
                         public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
