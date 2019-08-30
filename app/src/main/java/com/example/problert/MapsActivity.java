@@ -3,14 +3,11 @@ package com.example.problert;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,10 +27,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
-    private List<Address> address;
+
     private double lat;
     private double lng;
     Retrofit retrofit = new Retrofit.Builder()
@@ -54,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             .build();
     final RetrofitService retrofitService = retrofit.create(RetrofitService.class);
 
-    public Marker addmarking() {
+    public Marker addmarking(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
             return null;
@@ -72,14 +65,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
 
-                    retrofitService.getData(lat + "", lng + "").enqueue(new Callback<Data>() {
+                    retrofitService.getData(lat+"", lng+"").enqueue(new Callback<Data>() {
                         @Override
                         public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
                             if (response.isSuccessful()) {
                                 Data body = response.body();
                                 if (body != null) {
-                                    Log.d("data.lat", body.getLat() + "");
-                                    Log.d("data.lng", body.getLng() + "");
+                                    Log.d("data.lat", body.getLat()+"");
+                                    Log.d("data.lng", body.getLng()+"");
                                     Log.e("getData end", "======================================");
                                 }
                             }
@@ -118,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment   = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -151,10 +144,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void onLastLocationButtonClicked(View view) throws IOException {
-        TextView whichww = (TextView) findViewById(R.id.whichView);
-        String ad = findAddress(lat, lng);
-        whichww.setText(ad.toString());
+    public void onLastLocationButtonClicked(View view) {
         addmarking();
     }
 
@@ -164,30 +154,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //    }
 
-    public void writebutton(View view) {
+    public void writebutton(View view){
         Intent intentw = new Intent(this, MainActivity.class);
         intentw.putExtra("lat", lat);
         intentw.putExtra("lng", lng);
         startActivity(intentw);
-    }
-
-    //    public void foundwhich(double lat, double lng){
-//        Geocoder mGeocoder = new Gecoder(mContext);
-//        try{
-//            List<Address>
-//        }
-//    }
-    private String findAddress(double a, double b) throws IOException {
-            StringBuffer bf = new StringBuffer();
-            Geocoder geocoder = new Geocoder(this, Locale.KOREA);
-            address = geocoder.getFromLocation(a, b, 1);
-            Log.d("address", address+"");
-        if (address != null && address.size() > 0) {
-            // 주소
-            String currentLocationAddress = address.get(0).getAddressLine(0).toString();
-            // 전송할 주소 데이터 (위도/경도 포함 편집)
-            bf.append(currentLocationAddress);
-        }
-        return bf.toString();
     }
 }
