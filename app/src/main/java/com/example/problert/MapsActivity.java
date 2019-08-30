@@ -72,12 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Double.toString(lng);
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    try {
-                        ad = findAddress(lat, lng);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                     retrofitService.getData(lat+"", lng+"").enqueue(new Callback<List<Data>>() {
                         @Override
                         public void onResponse(@NonNull Call<List<Data>> call, @NonNull Response<List<Data>> response) {
@@ -87,6 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     for (int i = 0; i < datas.size(); i++) {
                                         Log.e("data" + i, datas.get(i).getCoordinate().getCoordinates()[0] + "");
                                         try {
+                                            ad = findAddress(lat, lng);
                                             mMap.addMarker(new MarkerOptions()
                                                 .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
                                                 .title(datas.get(i).getTitle())
@@ -108,11 +103,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
 
-                    mMap.addMarker(new MarkerOptions()
-                            .position(myLocation)
-                            .title("내 위치")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
-                            .snippet(ad));
+                    try {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(myLocation)
+                                .title("내 위치")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
+                                .snippet(findAddress(lat, lng)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
@@ -125,9 +124,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-//      mMap.addMarker(new MarkerOptions().position(new LatLng(35.1426, 126.8)));
         mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+
         addmarking();
     }
 
