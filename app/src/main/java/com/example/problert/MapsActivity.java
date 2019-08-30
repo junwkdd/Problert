@@ -90,9 +90,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         // 위치 정보가 들있을 것 같긴 한데 사실 잘 모르겠어
                                         try {
                                             mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[0], datas.get(i).getCoordinate().getCoordinates()[1]))
+                                                .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
                                                 .title(datas.get(i).getTitle())
-                                                .snippet(findAddress(datas.get(i).getCoordinate().getCoordinates()[0], datas.get(i).getCoordinate().getCoordinates()[1]))
+                                                .snippet(findAddress(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
                                             );
                                         } catch (IOException e) {
                                             e.printStackTrace();
