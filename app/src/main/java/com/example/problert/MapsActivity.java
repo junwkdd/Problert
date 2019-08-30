@@ -186,10 +186,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         addmarking();
     }
 
-    public void writebutton(View view) {
+    public void writebutton(View view) throws IOException {
         Intent intentw = new Intent(this, MainActivity.class);
         intentw.putExtra("lat", lat);
         intentw.putExtra("lng", lng);
+        intentw.putExtra("location", findAddress(lat, lng));
         startActivity(intentw);
     }
 
