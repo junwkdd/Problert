@@ -48,7 +48,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String ad;
     private double lat;
     private double lng;
-    double locations[][];
+//    double locations[][];
+//    private String title[];
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(RetrofitService.URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -87,9 +88,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     for (int i = 0; i < datas.size(); i++) {
                                         Log.e("data" + i, datas.get(i).getCoordinate().getCoordinates()[0] + "");
                                         // 위치 정보가 들있을 것 같긴 한데 사실 잘 모르겠어
-                                        // locations[i] = datas.get(i).getCoordinate().getCoordinates();
-                                        // 어떠한 배열이나 변수에 넣으렴
-                                        // datas.get(i).getTitle();
+                                        try {
+                                            mMap.addMarker(new MarkerOptions()
+                                                .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[0], datas.get(i).getCoordinate().getCoordinates()[1]))
+                                                .title(datas.get(i).getTitle())
+                                                .snippet(findAddress(datas.get(i).getCoordinate().getCoordinates()[0], datas.get(i).getCoordinate().getCoordinates()[1]))
+                                            );
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+//                                         locations[i] = datas.get(i).getCoordinate().getCoordinates();
+//                                         title[i] = datas.get(i).getTitle();
                                     }
                                     Log.e("getData2 end", "======================================");
                                 }
