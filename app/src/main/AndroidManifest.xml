@@ -36,14 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-
-        <activity android:name=".MainActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.problert.fileprovider"
@@ -53,7 +45,5 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
-=======
->>>>>>> 6ae981addfbd9789627f828cd26534dc793d5ede
     </application>
 </manifest>

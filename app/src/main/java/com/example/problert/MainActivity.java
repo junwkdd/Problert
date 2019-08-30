@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.problert",
+                        "com.roopre.cameratutorial.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -202,7 +202,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()){
             case R.id.camera_button:
                 //카메라 앱을 연다.
-                dispatchTakePictureIntent();
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, TAKE_PICTURE);
                 break;
         }
     }
@@ -211,21 +212,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        try{
-            switch(requestCode) {
-                case REQUEST_TAKE_PHOTO:
-                    if (resultCode == RESULT_OK){
-                        File file = new File(mCurrentPhotoPath);
-                        Bitmap bitmap = MediaStore.Images.Media
-                                .getBitmap(getContentResolver(), Uri.fromFile(file));
-                        if(bitmap != null){
-                            imageView.setImageBitmap(bitmap);
-                        }
+
+        switch(requestCode) {
+            case TAKE_PICTURE:
+                if (resultCode == RESULT_OK && intent.hasExtra("data")){
+                    Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                    if(bitmap != null){
+                        imageView.setImageBitmap(bitmap);
                     }
-                    break;
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
+                }
+                break;
         }
     }
 }
