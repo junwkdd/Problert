@@ -11,17 +11,16 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-
-            // 개발용 KEY
-            resValue "string", "google_maps_api_key", "AIzaSyAt5uJ1Cb_b6mVw2CGe4AJcHgXg8DCBxgA"
-        }
-
         release {
 //            minifyEnabled false
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            resValue "string", "google_maps_api_key", "AIzaSyBD6TlE76BuYPKfrwSqq5L-DWYLH7Q94qc"
+            resValue "string", "google_maps_key", "AIzaSyBD6TlE76BuYPKfrwSqq5L-DWYLH7Q94qc"
         }
+
+//        debug {
+//            // 개발용 KEY
+//            resValue "string", "google_maps_key", "AIzaSyAt5uJ1Cb_b6mVw2CGe4AJcHgXg8DCBxgA"
+//        }
     }
 }
 
