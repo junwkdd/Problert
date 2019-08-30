@@ -31,6 +31,7 @@
         android:layout_width="wrap_content"
         android:id="@+id/myLocation"
         android:text="현재 위치"
+        android:background="#41d6b9"
         android:onClick="onLastLocationButtonClicked"
         android:layout_marginLeft="11dp"
         android:layout_marginTop="600dp"
