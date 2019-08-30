@@ -93,8 +93,19 @@
             android:padding="11dp"
             android:background="@drawable/edittext_roundgray"/>
 
+        <ImageView
+            android:id="@+id/camera_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars" />
+
     </FrameLayout>
 
+    <Button
+        android:id="@+id/camera_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 
 
 </LinearLayout>
