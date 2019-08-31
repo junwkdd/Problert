@@ -56,31 +56,34 @@ public class PopupActivity extends Activity {
         String description = intent.getStringExtra("description");
         final String imgID = getIntent().getStringExtra("imgID");
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                try{
-                    final ImageView imgView = (ImageView)findViewById(R.id.loc_img);
-                    URL url = new URL("http://donote.co:3000/images/"+imgID);
-                    InputStream is = url.openStream();
-                    final Bitmap bm = BitmapFactory.decodeStream(is);
-                    handler.post(new Runnable() {
+        if (imgID != null) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    try {
+                        final ImageView imgView = (ImageView) findViewById(R.id.loc_img);
+                        URL url = new URL("http://donote.co:3000/images/" + imgID);
+                        Log.d("url", url + "");
+                        InputStream is = url.openStream();
+                        final Bitmap bm = BitmapFactory.decodeStream(is);
+                        Log.d("bm", bm + "");
+                        handler.post(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            imgView.setImageBitmap(bm);
-                        }
-                    });
-                    imgView.setImageBitmap(bm);
-                } catch(Exception e){
+                            @Override
+                            public void run() {
+                                imgView.setImageBitmap(bm);
+                            }
+                        });
+                        imgView.setImageBitmap(bm);
+                    } catch (Exception e) {
+
+                    }
 
                 }
-
-            }
-        });
-
-        t.start();
+            });
+            t.start();
+        }
 
         titleText.setText(title);
         locationText.setText(location);

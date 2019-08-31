@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
-    String imageid;
+    String imageid = "None";
     Uri selectedImageUri;
 
     private final int GET_GALLERY_IMAGE = 200;
@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 input.put("description", description.getText());
                 input.put("lat", lat);
                 input.put("lng", lng);
-                input.put("imageid", imageid);
+                if (imageid != "None")
+                    input.put("imageid", imageid);
 
                 if (title.getText().toString() != "")
                     onBackPressed();

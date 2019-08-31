@@ -135,7 +135,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String[] etc = marker.getSnippet().split("`");
         Log.d("etc", etc.length+"");
         if(etc.length > 1)
-            Log.d("etc", etc[1]+"");
+            Log.d("etc1", etc[1]+"");
         try {
             intent.putExtra("title", marker.getTitle());
             intent.putExtra("location", findAddress(marker.getPosition().latitude, marker.getPosition().longitude));
