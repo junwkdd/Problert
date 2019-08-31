@@ -49,12 +49,13 @@
         android:layout_width="match_parent"
         android:layout_height="524dp">
 
+
         <EditText
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="320dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="57dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/edittext_rounddesu"
             android:gravity="top"
@@ -63,38 +64,29 @@
             android:paddingTop="15dp"
             android:paddingBottom="15dp" />
 
-
         <Button
             android:id="@+id/submit_button"
             android:layout_width="66dp"
             android:layout_height="62dp"
             android:layout_marginLeft="280dp"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="365dp"
             android:background="@drawable/send"
             app:srcCompat="@drawable/send" />
 
         <TextView
             android:id="@+id/locationText"
-            android:layout_width="196dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/edittext_roundgray"
             android:padding="11dp" />
-
-        <TextView
-            android:id="@+id/locationText2"
-            android:text="img"
-            android:gravity="center"
-            android:layout_width="140dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="210dp"
-            android:background="@drawable/edittext_rounddesu"/>
 
         <ImageView
             android:id="@+id/camera_view"
             android:layout_width="184dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="210dp"
+            android:layout_marginTop="250dp"
+            android:layout_marginLeft="20dp"
             tools:srcCompat="@tools:sample/avatars" />
 
     </FrameLayout>
