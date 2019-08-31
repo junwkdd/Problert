@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PopupActivity extends Activity {
@@ -23,7 +25,7 @@ public class PopupActivity extends Activity {
         //UI 객체생성
         titleText = (TextView)findViewById(R.id.titleText);
         locationText = (TextView)findViewById(R.id.locationText);
-        descriptionText = (TextView)findViewById(R.id.snippetText);
+            descriptionText = (TextView)findViewById(R.id.snippetText);
 
         //데이터 가져오기
         Intent intent = getIntent();
@@ -43,6 +45,9 @@ public class PopupActivity extends Activity {
     }
 
     public void heardbutton(View v){
+        Button bt1;
+        bt1 = (Button) findViewById(R.id.empty);
+        bt1.setbuttonResource(0);
 
     }
 
