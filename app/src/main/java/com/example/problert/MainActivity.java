@@ -17,6 +17,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,7 +46,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    
+
     final String TAG = getClass().getSimpleName();
     ImageView imageView;
     final static int TAKE_PICTURE = 1;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageview;
 
     Context context;
+    private File imageUri;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -214,8 +218,61 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
-            imageview.setImageURI(selectedImageUri);
+//            Uri selectedImageUri = data.getData();
+//            imageview.setImageURI(selectedImageUri);
+            try {
+                // 비트맵 이미지로 가져온다
+                String imagePath = imageUri.getPath();
+                Bitmap image = BitmapFactory.decodeFile(imagePath);
+
+                // 이미지를 상황에 맞게 회전시킨다
+                ExifInterface exif = new ExifInterface(imagePath);
+                int exifOrientation = exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int exifDegree = exifOrientationToDegress(exifOrientation);
+                image = rotate(image, exifDegree);
+
+                // 변환된 이미지 사용
+                imageView.setImageBitmap(image);
+            } catch(Exception e) {
+                Toast.makeText(this, "오류발생: " + e.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
         }
+    }
+
+    private int exifOrientationToDegress(int exifOrientation) {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } return 0;
+    }
+
+    public Bitmap rotate(Bitmap bitmap, int degress){
+        if(degress != 0 && bitmap != null)
+        {
+            Matrix m = new Matrix();
+            m.setRotate(degress, (float) bitmap.getWidth() / 2,
+                    (float) bitmap.getHeight() / 2);
+
+            try
+            {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if(bitmap != converted)
+                {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            }
+            catch(OutOfMemoryError ex)
+            {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+            }
+        }
+        return bitmap;
     }
 }

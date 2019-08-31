@@ -86,24 +86,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:srcCompat="@tools:sample/avatars"
-            app:srcCompat="@drawable/back" />/>
+            app:srcCompat="@drawable/back" />
 
-<<<<<<< HEAD
-=======
         <Button
             android:id="@+id/galary_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Button" />
-        <Button
-            android:id="@+id/camera_button"
-            android:layout_width="98dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="450dp"
-            android:layout_marginLeft="130dp"
-            android:text="Button" />
 
->>>>>>> 17ecf62b4039bb3948459b447be093d66b44d9cb
     </FrameLayout>
 
 
