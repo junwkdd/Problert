@@ -1,5 +1,7 @@
 package com.example.problert;
 
+import androidx.annotation.Nullable;
+
 public class Data {
 //    private final String title;
 //    private final String description;
@@ -34,9 +36,9 @@ public class Data {
     String description;
     Coordinate coordinate;
     String createdAt;
-    String imageid;
+    @Nullable String imageid;
 
-    public Data(int liked, String issueid, String title, String description, Coordinate coordinate, String createdAt) {
+    public Data(int liked, String issueid, String title, String description, Coordinate coordinate, String createdAt, @Nullable String imageid) {
         this.liked = liked;
         this.issueid = issueid;
         this.title = title;
@@ -70,7 +72,7 @@ public class Data {
         return createdAt;
     }
 
-    public String getImageid() {
+    @Nullable public String getImageid() {
         return imageid;
     }
 }
