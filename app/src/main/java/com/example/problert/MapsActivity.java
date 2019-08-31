@@ -65,8 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if (location != null) {
                     // 현재 위치
-                    lat = location.getLatitude()-0.0032711;
-                    lng = location.getLongitude()-0.0690149;
+//                    lat = location.getLatitude()-0.0032711;
+//                    lng = location.getLongitude()-0.0690149;
+
+                    lat = location.getLatitude();
+                    lng = location.getLongitude();
 
                     Double.toString(lat);
                     Double.toString(lng);
@@ -140,6 +143,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             intent.putExtra("title", marker.getTitle());
             intent.putExtra("location", findAddress(marker.getPosition().latitude, marker.getPosition().longitude));
+            intent.putExtra("getSnippet", marker.getSnippet());
         } catch (IOException e) {
             e.printStackTrace();
         }
