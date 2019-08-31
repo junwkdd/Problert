@@ -163,6 +163,11 @@ public class MainActivity extends AppCompatActivity {
                 input.put("lat", lat);
                 input.put("lng", lng);
 
+                if (title.getText().toString() != "")
+                    onBackPressed();
+                else {
+                    Toast.makeText(MainActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+
                 retrofitService.postData(input).enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
@@ -184,11 +189,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("postData failed", "======================================");
                     }
                 });
-                Log.d("title", title.getText()+"");
-                if (title.getText() != null)
-                    onBackPressed();
-                else {
-                    Toast.makeText(MainActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
