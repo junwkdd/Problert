@@ -16,7 +16,7 @@
             android:id="@+id/Topbar"
             android:layout_width="match_parent"
             android:layout_height="88dp"
-            android:background="	#41d6b9"
+            android:background="#41d6b9"
             android:src="@drawable/top" />
 
         <Button
@@ -82,6 +82,16 @@
             android:background="@drawable/edittext_roundgray"
             android:padding="11dp" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="198dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/edittext_rounddesu"
+            android:padding="70dp"
+            android:text="img" />
+
         <ImageView
             android:id="@+id/camera_view"
             android:layout_width="170dp"
@@ -89,6 +99,8 @@
             android:layout_marginTop="198dp"
             android:layout_marginLeft="20dp"
             tools:srcCompat="@tools:sample/avatars" />
+
+
 
     </FrameLayout>
 

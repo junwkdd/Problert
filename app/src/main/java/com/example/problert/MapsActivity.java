@@ -152,6 +152,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
     }
 
     /**
@@ -176,7 +178,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 return;
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
