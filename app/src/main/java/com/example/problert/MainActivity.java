@@ -185,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
 //                                Log.d("data.lat", body.getLat()+"");
 //                                Log.d("data.lng", body.getLng()+"");
                                 Log.e("postData end", "======================================");
+                                Toast.makeText(getApplicationContext(), "민원이 성공적으로 작성되었습니다.", Toast.LENGTH_SHORT).show();
+                                onBackPressed();
                             }
                         }
                     }
@@ -192,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
                         Log.e("postData failed", "======================================");
+                        Toast.makeText(getApplicationContext(), "민원작성이 실패하였습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
