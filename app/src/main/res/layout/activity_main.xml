@@ -54,7 +54,7 @@
             android:layout_width="66dp"
             android:layout_height="62dp"
             android:layout_marginLeft="280dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:adjustViewBounds="true"
             android:background="@drawable/plus"
             app:srcCompat="@drawable/plus" />
@@ -85,7 +85,7 @@
 
         <TextView
             android:id="@+id/locationText"
-            android:layout_width="260dp"
+            android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/edittext_roundgray"
