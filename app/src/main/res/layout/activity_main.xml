@@ -85,7 +85,7 @@
             app:srcCompat="@drawable/send" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/locationText"
             android:layout_width="315dp"
             android:layout_height="45dp"
             android:layout_marginLeft="10dp"

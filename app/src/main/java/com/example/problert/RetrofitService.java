@@ -1,5 +1,7 @@
 package com.example.problert;
 
+import android.database.Observable;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,6 +66,13 @@ public interface RetrofitService {
     @FormUrlEncoded
     @POST("/api/v1/issue")
     Call<Data> postData(@FieldMap HashMap<String, Object> param);
+
+
+    @Multipart
+    @POST("/api/v1/issue")
+    Call<Data> uploadImage(@Part MultipartBody.Part File);
+
+
 
 
     /**

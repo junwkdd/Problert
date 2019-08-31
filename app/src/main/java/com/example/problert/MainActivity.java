@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,10 +32,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("lat:", lat+"");
         Log.d("lng:", lng+"");
 
+        TextView locationtext = (TextView) findViewById(R.id.locationText);
+        locationtext.setText(intent.getStringExtra("location"));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
                 Log.d(TAG, "권한 설정 완료");
@@ -117,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 HashMap<String, Object> input = new HashMap<>();
                 input.put("title", title.getText());
                 input.put("description", description.getText());
+                Log.d("title", title.getText()+"");
+                Log.d("description", description.getText()+"");
                 input.put("lat", lat);
                 input.put("lng", lng);
 
@@ -127,11 +138,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (response.isSuccessful()) {
                             Data body = response.body();
                             if (body != null) {
-//                                Log.d("data.getTitle()", body.getTitle()+"");
-//                                Log.d("data.getDescription()", body.getDescription()+"");
-//                                Log.d("data.lat", body.getLat()+"");
-//                                Log.d("data.lng", body.getLng()+"");
                                 Log.e("postData end", "======================================");
+                                onBackPressed();
                             }
                         }
                     }
