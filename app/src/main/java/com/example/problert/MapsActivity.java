@@ -65,8 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if (location != null) {
                     // 현재 위치
-                    lat = location.getLatitude();
-                    lng = location.getLongitude();
+                    lat = location.getLatitude()-0.0032711;
+                    lng = location.getLongitude()-0.0690149;
 
                     Double.toString(lat);
                     Double.toString(lng);
@@ -124,14 +124,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
-        mMap.addMarker(new MarkerOptions()
-            .position(new LatLng(36.5749321, 128.5038))
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
-        );
-
+        //36.5749321, 128.5038
         addmarking();
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(1,1)));
-        // 카메라 줌
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lng)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
@@ -140,7 +135,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(marker.getPosition().latitude-0.0007, marker.getPosition().longitude)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
 //        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
-
+        Log.d("move1", marker.getPosition()+"");
         Intent intent = new Intent(this, PopupActivity.class);
         try {
             intent.putExtra("title", marker.getTitle());
@@ -191,7 +186,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onLastLocationButtonClicked(View view) throws IOException {
-//        mMap.clear();
+        mMap.clear();
         addmarking();
     }
 
