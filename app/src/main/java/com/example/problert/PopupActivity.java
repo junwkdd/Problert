@@ -47,8 +47,7 @@ public class PopupActivity extends Activity {
     public void heardbutton(View v){
         Button bt1;
         bt1 = (Button) findViewById(R.id.empty);
-        bt1.setbuttonResource(0);
-
+        //bt1.setbuttonResource(0);
     }
 
 
