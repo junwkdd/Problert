@@ -83,10 +83,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     for (int i = 0; i < datas.size(); i++) {
                                         Log.e("data" + i, datas.get(i).getCoordinate().getCoordinates()[0] + "");
                                         mMap.addMarker(new MarkerOptions()
-                                            .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
-                                            .title(datas.get(i).getTitle())
-                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
-                                            .snippet(datas.get(i).getDescription())
+                                                .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
+                                                .title(datas.get(i).getTitle())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
+                                                .snippet(datas.get(i).getDescription())
                                         );
                                     }
                                     Log.e("getData2 end", "======================================");
@@ -102,10 +102,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     });
 
                     mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(lat,lng))
-                        .title("내 위치")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
-                        .snippet("현재 당신의 위치입니다!"));
+                            .position(new LatLng(lat,lng))
+                            .title("내 위치")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
+                            .snippet("현재 당신의 위치입니다!"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lng)));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f)); //.zoomTo(17.0f));

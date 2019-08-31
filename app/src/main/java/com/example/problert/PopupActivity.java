@@ -32,7 +32,7 @@ public class PopupActivity extends Activity {
         titleText = (TextView)findViewById(R.id.titleText);
         locationText = (TextView)findViewById(R.id.locationText);
         descriptionText = (TextView)findViewById(R.id.snippetText);
-        locationImage = (ImageView) findViewById(R.id.loc_img);
+//        locationImage = (ImageView) findViewById(R.id.loc_img);
 
         //데이터 가져오기
         Intent intent = getIntent();
@@ -40,12 +40,12 @@ public class PopupActivity extends Activity {
         String title = intent.getStringExtra("title");
         String location = intent.getStringExtra("location");
         String description = intent.getStringExtra("description");
-        byte[] loc_img = getIntent().getByteArrayExtra("loc_img");
+//        byte[] loc_img = getIntent().getByteArrayExtra("loc_img");
 
         titleText.setText(title);
         locationText.setText(location);
         descriptionText.setText(description);
-        locationImage.setImageBitmap(BitmapFactory.decodeByteArray(loc_img, 0, loc_img.length));
+//        locationImage.setImageBitmap(BitmapFactory.decodeByteArray(loc_img, 0, loc_img.length));
         goodcheck();
     }
 

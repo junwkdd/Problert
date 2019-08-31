@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,10 +16,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.widget.Toast;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -36,7 +33,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -62,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
 
-    Uri selectedImageUri;
     Context context;
     private RetrofitService retrofitService;
 
@@ -223,33 +218,27 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
-
         if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
+            Uri selectedImageUri = data.getData();
             imageview.setImageURI(selectedImageUri);
-            Log.d("서지우의 고생은 결실을 맺을까?", String.valueOf(selectedImageUri));
+            try {
+                // 비트맵 이미지로 가져온다
+                String imagePath = selectedImageUri.getPath();
+                Bitmap image = BitmapFactory.decodeFile(imagePath);
 
-            selectedImageUri = data.getData();
-            imageview.setImageURI(selectedImageUri);
-//            try {
-//                // 비트맵 이미지로 가져온다
-//                // String imagePath = selectedImageUri.getPath();
-//                String imagePath = getRealPathFromUri(context, selectedImageUri);
-//                Bitmap image = BitmapFactory.decodeFile(imagePath);
-//
-//                // 이미지를 상황에 맞게 회전시킨다
-//                ExifInterface exif = new ExifInterface(imagePath);
-//                int exifOrientation = exif.getAttributeInt(
-//                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-//                int exifDegree = exifOrientationToDegress(exifOrientation);
-//                image = rotate(image, exifDegree);
-//
-//                // 변환된 이미지 사용
-//                imageView.setImageBitmap(image);
-//            } catch(Exception e) {
-//                Log.e("rotate image", e.getMessage());
-//                Log.e("rotate image", String.valueOf(e.getCause()));
-//            }
+                // 이미지를 상황에 맞게 회전시킨다
+                ExifInterface exif = new ExifInterface(imagePath);
+                int exifOrientation = exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int exifDegree = exifOrientationToDegress(exifOrientation);
+                image = rotate(image, exifDegree);
+
+                // 변환된 이미지 사용
+                imageView.setImageBitmap(image);
+            } catch (Exception e) {
+                Toast.makeText(this, "오류발생: " + e.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
         File file = new File(getRealPathFromUri(context, selectedImageUri));
@@ -298,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     bitmap.recycle();
                     bitmap = converted;
+
                 }
             }
             catch(OutOfMemoryError ex)
@@ -306,20 +296,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return bitmap;
-    }
-
-    public static String getRealPathFromUri(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
     }
 }
