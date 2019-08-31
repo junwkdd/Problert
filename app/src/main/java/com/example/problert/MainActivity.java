@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageview;
 
     Context context;
-    private File imageUri;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -218,11 +217,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//            Uri selectedImageUri = data.getData();
-//            imageview.setImageURI(selectedImageUri);
+            Uri selectedImageUri = data.getData();
+            imageview.setImageURI(selectedImageUri);
             try {
                 // 비트맵 이미지로 가져온다
-                String imagePath = imageUri.getPath();
+                String imagePath = selectedImageUri.getPath();
                 Bitmap image = BitmapFactory.decodeFile(imagePath);
 
                 // 이미지를 상황에 맞게 회전시킨다
