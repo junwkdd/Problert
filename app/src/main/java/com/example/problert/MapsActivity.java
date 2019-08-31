@@ -88,7 +88,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 .title(datas.get(i).getTitle())
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
                                                 .snippet(datas.get(i).getDescription()+"`"+datas.get(i).getImageid())
+
                                         );
+                                        Log.d("ㄱㄱ", datas.get(i).getDescription()+"`"+datas.get(i).getImageid());
                                     }
                                     Log.e("getData2 end", "======================================");
                                 }

@@ -173,11 +173,6 @@ public class MainActivity extends AppCompatActivity {
                 if (imageid != "None")
                     input.put("imageid", imageid);
 
-                if (title.getText().toString() != "")
-                    onBackPressed();
-                else {
-                    Toast.makeText(MainActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-
                 retrofitService.postData(input).enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
@@ -199,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("postData failed", "======================================");
                     }
                 });
-                }
             }
         });
     }
@@ -264,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
                     imageid = response.body().getImage();
+                    Log.d("rrrrr", imageid+"");
                 }
             }
             @Override
@@ -314,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
     public static String getRealPathFromUri(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = {MediaStore.Images.Media.DATA};
+            String[] proj = { MediaStore.Images.Media.DATA };
             cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
