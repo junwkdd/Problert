@@ -70,7 +70,7 @@ public interface RetrofitService {
 
     @Multipart
     @POST("/api/v1/upload/image")
-    Call<Data> uploadImage(@Part MultipartBody.Part File);
+    Call<ImageId> uploadImage(@Part MultipartBody.Part File);
 
 
 

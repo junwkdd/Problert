@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -53,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
+    String imageid;
+    Uri selectedImageUri;
+
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
 
     Context context;
+    private RetrofitService retrofitService;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -102,22 +110,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this.getBaseContext();
 
-        imageview = (ImageView)findViewById(R.id.camera_view);
-        imageview.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, GET_GALLERY_IMAGE);
-            }
-        });
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create()
                 ).build();
 
-        final RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+        retrofitService = retrofit.create(RetrofitService.class);
         final EditText title = (EditText)findViewById(R.id.title);
         final EditText description = (EditText)findViewById(R.id.description);
         Button submit_button = (Button) findViewById(R.id.submit_button);
@@ -134,6 +132,16 @@ public class MainActivity extends AppCompatActivity {
 
         TextView locationtext = (TextView) findViewById(R.id.locationText);
         locationtext.setText(intent.getStringExtra("location"));
+
+        imageview = (ImageView)findViewById(R.id.camera_view);
+        imageview.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_GALLERY_IMAGE);
+            }
+        });
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
@@ -162,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 input.put("description", description.getText());
                 input.put("lat", lat);
                 input.put("lng", lng);
+                input.put("imageid", imageid);
 
                 retrofitService.postData(input).enqueue(new Callback<Data>() {
                     @Override
@@ -184,12 +193,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("postData failed", "======================================");
                     }
                 });
-                Log.d("title", title.getText()+"");
-                if (title.getText() != null)
-                    onBackPressed();
-                else {
-                    Toast.makeText(MainActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -221,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
+            Log.d("서지우의 고생은 결실을 맺을까?", String.valueOf(selectedImageUri));
+            selectedImageUri = data.getData();
             imageview.setImageURI(selectedImageUri);
             try {
                 // 비트맵 이미지로 가져온다
@@ -242,6 +246,26 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+
+        File file = new File(getRealPathFromUri(context, selectedImageUri));
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        retrofitService.uploadImage(body).enqueue(new Callback<ImageId>() {
+            @Override
+            public void onResponse(Call<ImageId> call, Response<ImageId> response) {
+                if (response.isSuccessful()) {
+                    Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
+                    imageid = response.body().getImage();
+                }
+            }
+            @Override
+            public void onFailure(Call<ImageId> call, Throwable t) {
+                Log.d("서지우의 고생", t.getMessage());
+                Log.d("서지우의 고생", String.valueOf(t.getCause()));
+                Log.d("서지우의 고생은", "이제 시작이다.");
+            }
+        });
     }
 
     private int exifOrientationToDegress(int exifOrientation) {
@@ -279,4 +303,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return bitmap;
     }
+
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 }
+
+
