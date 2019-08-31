@@ -133,14 +133,14 @@ public class MainActivity extends AppCompatActivity {
         TextView locationtext = (TextView) findViewById(R.id.locationText);
         locationtext.setText(intent.getStringExtra("location"));
 
-        imageview = (ImageView)findViewById(R.id.camera_view);
-        imageview.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, GET_GALLERY_IMAGE);
-            }
-        });
+//        imageview = (ImageView)findViewById(R.id.camera_view);
+//        imageview.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//                startActivityForResult(intent, GET_GALLERY_IMAGE);
+//            }
+//        });
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
