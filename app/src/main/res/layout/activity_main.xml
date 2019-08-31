@@ -81,6 +81,14 @@
             android:background="@drawable/edittext_roundgray"
             android:padding="11dp" />
 
+        <TextView
+            android:id="@+id/locationText2"
+            android:layout_width="184dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="210dp"
+            android:background="@drawable/edittext_rounddesu"
+            android:padding="11dp" />
+
         <ImageView
             android:id="@+id/camera_view"
             android:layout_width="184dp"
