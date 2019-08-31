@@ -57,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
+    String imageid;
 
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
 
     Uri selectedImageUri;
     Context context;
+    private RetrofitService retrofitService;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -108,22 +110,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this.getBaseContext();
 
-        imageview = (ImageView)findViewById(R.id.camera_view);
-        imageview.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, GET_GALLERY_IMAGE);
-            }
-        });
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create()
                 ).build();
 
-        final RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+        retrofitService = retrofit.create(RetrofitService.class);
         final EditText title = (EditText)findViewById(R.id.title);
         final EditText description = (EditText)findViewById(R.id.description);
         Button submit_button = (Button) findViewById(R.id.submit_button);
@@ -140,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
 
         TextView locationtext = (TextView) findViewById(R.id.locationText);
         locationtext.setText(intent.getStringExtra("location"));
+
+        imageview = (ImageView)findViewById(R.id.camera_view);
+        imageview.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_GALLERY_IMAGE);
+            }
+        });
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 input.put("description", description.getText());
                 input.put("lat", lat);
                 input.put("lng", lng);
+                input.put("imageid", imageid);
 
                 retrofitService.postData(input).enqueue(new Callback<Data>() {
                     @Override
@@ -189,26 +191,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
                         Log.e("postData failed", "======================================");
-                    }
-                });
-
-                File file = new File(getRealPathFromUri(context, selectedImageUri));
-                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-                retrofitService.uploadImage(body).enqueue(new Callback<Data>() {
-                    @Override
-                    public void onResponse(Call<Data> call, Response<Data> response) {
-                        if (response.isSuccessful()) {
-                            Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
-
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<Data> call, Throwable t) {
-                        Log.d("서지우의 고생", t.getMessage());
-                        Log.d("서지우의 고생", String.valueOf(t.getCause()));
-                        Log.d("서지우의 고생은", "이제 시작이다.");
                     }
                 });
             }
@@ -269,6 +251,26 @@ public class MainActivity extends AppCompatActivity {
 //                Log.e("rotate image", String.valueOf(e.getCause()));
 //            }
         }
+
+        File file = new File(getRealPathFromUri(context, selectedImageUri));
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        retrofitService.uploadImage(body).enqueue(new Callback<ImageId>() {
+            @Override
+            public void onResponse(Call<ImageId> call, Response<ImageId> response) {
+                if (response.isSuccessful()) {
+                    Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
+                    imageid = response.body().getImage();
+                }
+            }
+            @Override
+            public void onFailure(Call<ImageId> call, Throwable t) {
+                Log.d("서지우의 고생", t.getMessage());
+                Log.d("서지우의 고생", String.valueOf(t.getCause()));
+                Log.d("서지우의 고생은", "이제 시작이다.");
+            }
+        });
     }
 
     private int exifOrientationToDegress(int exifOrientation) {
