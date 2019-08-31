@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,21 +34,23 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     final String TAG = getClass().getSimpleName();
     ImageView imageView;
-    Button cameraBtn;
     final static int TAKE_PICTURE = 1;
-
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
+
+    private final int GET_GALLERY_IMAGE = 200;
+    private ImageView imageview;
 
     Context context;
 
@@ -90,15 +93,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this.getBaseContext();
 
-        imageView = findViewById(R.id.camera_view);
-        cameraBtn = findViewById(R.id.camera_button);
-
-        cameraBtn.setOnClickListener(this);
+        imageview = (ImageView)findViewById(R.id.camera_view);
+        imageview.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_GALLERY_IMAGE);
+            }
+        });
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -112,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button submit_button = (Button) findViewById(R.id.submit_button);
         Button back_btn = (Button) findViewById(R.id.back_btn);
         Intent intent = getIntent();
+//        Intent intent1 = new Intent(Intent.ACTION_PICK);
+//        intent1.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//        intent1.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+
 
         final double lat = intent.getDoubleExtra("lat", 0.00);
         final double lng = intent.getDoubleExtra("lng", 0.00);
@@ -172,20 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
-//        checkPermission();
     }
-//
-//    private void checkPermission() {
-//        if(Build.VERSION.SDK_INT>=23) { //안드로이드6.0이상 권한 체크
-//            TedPermission.with(context)
-//                    .setPermissionListener(permissionListener)
-//                    .setRationaleMessage("이미지를 다루기 위해서는 접근 권한이 필요합니다")
-//                    .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다..\n [설정] > [권한] 에서 사용으로 활성화 해 주세요")
-//                    .setPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
-//                    .check();
-//    } else {
-//
-//        }
 
     //권한 요청
     @Override
@@ -197,20 +196,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.camera_button:
-                //카메라 앱을 연다.
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, TAKE_PICTURE);
-                break;
-        }
-    }
-
     //카메라로 촬영한 영상을 가져오는 부분
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Intent intent = new Intent();
         super.onActivityResult(requestCode, resultCode, intent);
 
         switch(requestCode) {
@@ -222,6 +211,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 break;
+        }
+        if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+            imageview.setImageURI(selectedImageUri);
         }
     }
 }
