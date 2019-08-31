@@ -34,6 +34,7 @@ public class Data {
     String description;
     Coordinate coordinate;
     String createdAt;
+    String imageid;
 
     public Data(int liked, String issueid, String title, String description, Coordinate coordinate, String createdAt) {
         this.liked = liked;
@@ -42,6 +43,7 @@ public class Data {
         this.description = description;
         this.coordinate = coordinate;
         this.createdAt = createdAt;
+        this.imageid = imageid;
     }
 
     public int getLiked() {
@@ -66,6 +68,10 @@ public class Data {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public String getImageid() {
+        return imageid;
     }
 }
 

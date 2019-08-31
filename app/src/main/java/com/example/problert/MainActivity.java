@@ -199,13 +199,14 @@ public class MainActivity extends AppCompatActivity {
 
                 File file = new File(getRealPathFromUri(context, selectedImageUri));
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file.getName(), requestFile);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
                 retrofitService.uploadImage(body).enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(Call<Data> call, Response<Data> response) {
                         if (response.isSuccessful()) {
                             Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
+
                         }
                     }
                     @Override
