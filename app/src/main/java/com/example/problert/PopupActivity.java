@@ -3,20 +3,23 @@ package com.example.problert;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
 public class PopupActivity extends Activity {
     TextView titleText;
     TextView locationText;
     TextView descriptionText;
-
-
+    public int allgood = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(this.getClass().getName(), "Popupactivity 진입====================================");
         super.onCreate(savedInstanceState);
+
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_popup);
@@ -35,6 +38,7 @@ public class PopupActivity extends Activity {
         titleText.setText(title);
         locationText.setText(location);
         descriptionText.setText(description);
+        goodcheck();
     }
 
     //확인 버튼 클릭
@@ -42,16 +46,53 @@ public class PopupActivity extends Activity {
         finish();
         overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
     }
-
-    public void heardbutton(View v){
+    //////////////////////////스위치
+    public void heartbutton(View v){
         Button bt1;
+        Log.d(this.getClass().getName(), "heardbutton 실행=================");
         bt1 = (Button) findViewById(R.id.empty);
-//        bt1.setbuttonResource(0);
-
+        bt1.setVisibility(View.INVISIBLE);
+        allgood++;
+        goodscreen();
     }
 
 
-    public void unheardbutton(View v){
+    public void unheartbutton(View v){
+        Log.d(this.getClass().getName(), "unheardbutton 실행=================");
+        Button bt1;
+        bt1 = (Button) findViewById(R.id.empty);
+        bt1.setVisibility(View.VISIBLE);
+        allgood--;
+        goodscreen();
+    }
+    ///////////////////////////////// 함수
+    public void heartbutton(){
+        Button bt1;
+        Log.d(this.getClass().getName(), "heartbutton 실행=================");
+        bt1 = (Button) findViewById(R.id.empty);
+        bt1.setVisibility(View.INVISIBLE);
+        allgood++;
+        goodscreen();
+    }
 
+    public void unheartbutton(){
+        Log.d(this.getClass().getName(), "unheartbutton1 실행=================");
+        Button bt1;
+        bt1 = (Button) findViewById(R.id.empty);
+        bt1.setVisibility(View.VISIBLE);
+        allgood--;
+        goodscreen();
+    }
+    ///////////////////////
+    public void goodcheck(){ //좋아요x 0 좋아여 1
+        Log.d(this.getClass().getName(), "good check 진입=================");
+        int good = 0;
+        if(good == 1) heartbutton();
+        goodscreen();
+    }
+
+    public void goodscreen(){
+        TextView goodtext = (TextView)findViewById(R.id.goodall);
+        goodtext.setText(String.valueOf(allgood));
     }
 }
