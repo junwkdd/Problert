@@ -265,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     bitmap.recycle();
                     bitmap = converted;
+                    
                 }
             }
             catch(OutOfMemoryError ex)
