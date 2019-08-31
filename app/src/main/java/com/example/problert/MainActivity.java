@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -24,10 +25,14 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
+
+    Uri selectedImageUri;
 
     Context context;
 
@@ -180,6 +187,24 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("postData failed", "======================================");
                     }
                 });
+
+                File file = new File(getRealPathFromUri(context, selectedImageUri));
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file.getName(), requestFile);
+
+                retrofitService.uploadImage(body).enqueue(new Callback<Data>() {
+                    @Override
+                    public void onResponse(Call<Data> call, Response<Data> response) {
+                        if (response.isSuccessful()) {
+                            Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Data> call, Throwable t) {
+                        Log.d("서지우의 고생", t.getMessage());
+                        Log.d("서지우의 고생은", "이제 시작이다.");
+                    }
+                });
             }
         });
     }
@@ -211,8 +236,24 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
             imageview.setImageURI(selectedImageUri);
+            Log.d("서지우의 고생은 결실을 맺을까?", String.valueOf(selectedImageUri));
+        }
+    }
+
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 }
