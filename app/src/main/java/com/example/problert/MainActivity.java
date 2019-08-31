@@ -1,6 +1,7 @@
 package com.example.problert;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -12,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,52 +46,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final String TAG = getClass().getSimpleName();
     ImageView imageView;
     Button cameraBtn;
-    final static int TAKE_PICTURE = 1;
-
+    ImageView camera_view;
+    Button camera_btn, gallery_btn;
+    String currentPhotoPath;
     String mCurrentPhotoPath;
-    static final int REQUEST_TAKE_PHOTO = 1;
-
+    Uri imageUri;
+    Uri photoURI, albumURI;
     Context context;
+    private final static int TAKE_PICTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int MY_PERMISSON_CAMERA = 1111;
+    private static final int REQUEST_TAKE_PHOTO = 2222;
+    private static final int REQUEST_TAKE_ALBUM = 3333;
+    private static final int REQUEST_IMAGE_CROP = 4444;
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.roopre.cameratutorial.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
-
-
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -172,20 +143,130 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
-//        checkPermission();
     }
-//
-//    private void checkPermission() {
-//        if(Build.VERSION.SDK_INT>=23) { //안드로이드6.0이상 권한 체크
-//            TedPermission.with(context)
-//                    .setPermissionListener(permissionListener)
-//                    .setRationaleMessage("이미지를 다루기 위해서는 접근 권한이 필요합니다")
-//                    .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다..\n [설정] > [권한] 에서 사용으로 활성화 해 주세요")
-//                    .setPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
-//                    .check();
-//    } else {
-//
-//        }
+
+    private void captureCamera() {
+        String state = Environment.getExternalStorageState();
+
+        if(Environment.MEDIA_MOUNTED.equals(state)) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.e("captureCamera Error", ex.toString());
+                }
+
+                if (photoFile != null) {
+                    Uri providerURI = FileProvider.getUriForFile(this, getPackageName(), photoFile);
+                    imageUri = providerURI;
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
+            }
+        } else {
+            Toast.makeText(this, "저장공간이 접근 불가능한 기기입니다.",  Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        File imageFile = null;
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "./");
+
+        if(!storageDir.exists()) {
+            Log.i("CurrentPhotoPath1", storageDir.toString());
+            storageDir.mkdirs();
+        }
+
+        imageFile = new File(storageDir, imageFileName);
+        currentPhotoPath = imageFile.getAbsolutePath();
+        return imageFile;
+    }
+
+    private void getGallery() {
+        Log.i("getGallery", "Call");
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_TAKE_ALBUM);;
+    }
+
+    private void galleryAddPic() {
+        Log.i("galleryAddPic", "Call");
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+        Toast.makeText(this, "사진이 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    // 카메라 전용 크랍
+    public void cropImage(){
+        Log.i("cropImage", "Call");
+        Log.i("cropImage", "photoURI : " + photoURI + " / albumURI : " + albumURI);
+
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+        // 50x50픽셀미만은 편집할 수 없다는 문구 처리 + 갤러리, 포토 둘다 호환하는 방법
+        cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.setDataAndType(photoURI, "image/*");
+        //cropIntent.putExtra("outputX", 200); // crop한 이미지의 x축 크기, 결과물의 크기
+        //cropIntent.putExtra("outputY", 200); // crop한 이미지의 y축 크기
+        cropIntent.putExtra("aspectX", 1); // crop 박스의 x축 비율, 1&1이면 정사각형
+        cropIntent.putExtra("aspectY", 1); // crop 박스의 y축 비율
+        cropIntent.putExtra("scale", true);
+        cropIntent.putExtra("output", albumURI); // 크랍된 이미지를 해당 경로에 저장
+        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case REQUEST_TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        Log.i("REQUEST_TAKE_PHOTO", "OK");
+                        galleryAddPic();
+
+                        camera_view.setImageURI(imageUri);
+                    } catch (Exception e) {
+                        Log.e("REQUEST_TAKE_PHOTO", e.toString());
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_TAKE_ALBUM:
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data.getData() != null) {
+                        try {
+                            File albumFile = null;
+                            albumFile = createImageFile();
+                            photoURI = data.getData();
+                            albumURI = Uri.fromFile(albumFile);
+                            cropImage();
+                        } catch (Exception e) {
+                            Log.e("TAKE_ALBUM_SINGLE ERROR", e.toString());
+                        }
+                    }
+                }
+                break;
+            case REQUEST_IMAGE_CROP:
+                if (resultCode == Activity.RESULT_OK) {
+                    galleryAddPic();
+                    camera_view.setImageURI(albumURI);
+                }
+                break;
+        }
+    }
 
     //권한 요청
     @Override
@@ -204,23 +285,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //카메라 앱을 연다.
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, TAKE_PICTURE);
-                break;
-        }
-    }
-
-    //카메라로 촬영한 영상을 가져오는 부분
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        switch(requestCode) {
-            case TAKE_PICTURE:
-                if (resultCode == RESULT_OK && intent.hasExtra("data")){
-                    Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
-                    if(bitmap != null){
-                        imageView.setImageBitmap(bitmap);
-                    }
-                }
                 break;
         }
     }
