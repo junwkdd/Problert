@@ -40,4 +40,13 @@ public class PopupActivity extends Activity {
         finish();
         overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
     }
+
+    public void heardbutton(View v){
+
+    }
+
+
+    public void unheardbutton(View v){
+
+    }
 }

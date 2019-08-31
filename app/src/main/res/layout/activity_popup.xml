@@ -53,6 +53,33 @@
                 android:textColor="#000"
                 android:textSize="15sp" />
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp">
+
+                <Button
+                    android:id="@+id/empty"
+                    android:layout_width="33dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="310dp"
+                    android:background="@drawable/emhr"
+                    android:onClick="heartbutton"
+                    />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="57dp">
+
+                    <Button
+                        android:id="@+id/full"
+                        android:layout_width="33dp"
+                        android:layout_height="34dp"
+                        android:layout_marginLeft="310dp"
+                        android:background="@drawable/fullhr"
+                        android:onClick="unheartbutton"
+                        />
+                </FrameLayout>
+            </FrameLayout>
         </LinearLayout>
     </FrameLayout>
     <!-- 닫기 버튼 -->
