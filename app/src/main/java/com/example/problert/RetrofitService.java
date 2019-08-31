@@ -69,7 +69,7 @@ public interface RetrofitService {
 
 
     @Multipart
-    @POST("/api/v1/issue")
+    @POST("/api/v1/upload/image")
     Call<Data> uploadImage(@Part MultipartBody.Part File);
 
 
@@ -91,12 +91,10 @@ public interface RetrofitService {
      * PATCH 방식. 값은 위들과 같습니다.
      * @FIeld("title") String title : patch 방식을 통해 title 에 해당하는 값을 넘기기 위해 사용.
      * @FormUrlEncoded Field 형식 사용 시 Form이 Encoding 되어야 하기 때문에 사용하는 어노테이션
-     * @param title
      * @return
      */
-    @FormUrlEncoded
-    @PATCH("/posts/1")
-    Call<Data> patchData(@Field("title") String title);
+    @PATCH("/api/v1/issue/:issueid/like")
+    Call<Data> add_like(@Path("issueid") String issueid);
 
 
     /**
@@ -104,8 +102,8 @@ public interface RetrofitService {
      * Call<ResponseBody> : ResponseBody는 통신을 통해 되돌려 받는 값이 없을 경우 사용.
      * @return
      */
-    @DELETE("/posts/1")
-    Call<ResponseBody> deleteData();
+    @DELETE("/api/v1/issue/:issueid/like/remove")
+    Call<Data> delete_like(@Path("issueid") String issueid);
 
     /*
      * DELETE 방식에서 @Body를 사용하기 위해서는 아래처럼 해야함.
