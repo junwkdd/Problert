@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                .addConverterFactory(GsonConverterFactory.create()
+                ).build();
 
         final RetrofitService retrofitService = retrofit.create(RetrofitService.class);
         final EditText title = (EditText)findViewById(R.id.title);
@@ -123,11 +123,6 @@ public class MainActivity extends AppCompatActivity {
         Button submit_button = (Button) findViewById(R.id.submit_button);
         Button back_btn = (Button) findViewById(R.id.back_btn);
         Intent intent = getIntent();
-//        Intent intent1 = new Intent(Intent.ACTION_PICK);
-//        intent1.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//        intent1.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
-
 
         final double lat = intent.getDoubleExtra("lat", 0.00);
         final double lng = intent.getDoubleExtra("lng", 0.00);
