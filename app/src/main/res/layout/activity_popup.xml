@@ -33,7 +33,8 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/fullhr"
-                android:onClick="unheartbutton" />
+                android:onClick="unheartbutton"
+                />
 
             <Button
                 android:id="@+id/empty"
@@ -44,6 +45,18 @@
                 android:onClick="heartbutton"
                 />
 
+            <TextView
+                android:id="@+id/goodall"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="60dp"
+                android:text="TextView"
+                android:textSize="12dp"
+                android:textColor="#673AB7" />
+
+
+            // android:onClick="mOnClose"
         </FrameLayout>
 
         <LinearLayout
@@ -67,7 +80,6 @@
                 android:id="@+id/snippetText"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:layout_marginBottom="3dp"
                 android:alpha="0.87"
                 android:gravity="center"
                 android:textColor="#000"
