@@ -13,9 +13,8 @@
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="383dp"
-        android:layout_height="572dp"
-        android:layout_margin="15dp"
+        android:layout_width="392dp"
+        android:layout_height="605dp"
         tools:context="com.example.user.Problert.MapsActivity"
         tools:ignore="DuplicateIds" />
 
@@ -27,22 +26,22 @@
         android:background="	#41d6b9"/>
 
     <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:id="@+id/myLocation"
-        android:text="현재 위치"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="610dp"
         android:background="#41d6b9"
         android:onClick="onLastLocationButtonClicked"
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="600dp"
+        android:text="현재 위치"
         tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/writepage"
-        android:layout_width="83dp"
-        android:layout_height="83dp"
-        android:layout_marginLeft="300dp"
-        android:layout_marginTop="540dp"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="566dp"
         android:background="@drawable/pen"
         android:onClick="writebutton" />
 
