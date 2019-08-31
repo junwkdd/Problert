@@ -83,11 +83,12 @@
 
         <TextView
             android:id="@+id/locationText2"
-            android:layout_width="184dp"
+            android:text="img file"
+            android:gravity="center"
+            android:layout_width="140dp"
             android:layout_height="100dp"
             android:layout_marginLeft="210dp"
-            android:background="@drawable/edittext_rounddesu"
-            android:padding="11dp" />
+            android:background="@drawable/edittext_rounddesu"/>
 
         <ImageView
             android:id="@+id/camera_view"
