@@ -178,7 +178,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 return;
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
