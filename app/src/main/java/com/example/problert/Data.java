@@ -2,6 +2,8 @@ package com.example.problert;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+
 public class Data {
 //    private final String title;
 //    private final String description;
@@ -72,8 +74,8 @@ public class Data {
         return createdAt;
     }
 
-    @Nullable public String getImageid() {
-        return imageid;
+    public String getImageid() {
+        return  imageid;
     }
 }
 

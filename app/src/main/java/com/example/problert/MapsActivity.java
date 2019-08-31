@@ -47,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Address> address;
     private double lat;
     private double lng;
+    String imgID;
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(RetrofitService.URL)
@@ -86,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
                                                 .title(datas.get(i).getTitle())
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
-                                                .snippet(datas.get(i).getDescription())
+                                                .snippet(datas.get(i).getDescription()+"`"+datas.get(i).getImageid())
                                         );
                                     }
                                     Log.e("getData2 end", "======================================");
@@ -131,10 +132,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
 //        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, PopupActivity.class);
+        String[] etc = marker.getSnippet().split("`");
+        Log.d("etc", etc.length+"");
+        if(etc.length > 1)
+            Log.d("etc", etc[1]+"");
         try {
             intent.putExtra("title", marker.getTitle());
             intent.putExtra("location", findAddress(marker.getPosition().latitude, marker.getPosition().longitude));
-            intent.putExtra("description", marker.getSnippet());
+            intent.putExtra("description", etc[0]);
+            if(etc.length > 1)
+                intent.putExtra("imgID", etc[1]);
         } catch (IOException e) {
             e.printStackTrace();
         }
