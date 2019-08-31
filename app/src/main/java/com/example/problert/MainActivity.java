@@ -19,6 +19,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.widget.Toast;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
-
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
 
@@ -132,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("lat:", lat+"");
         Log.d("lng:", lng+"");
 
+        TextView locationtext = (TextView) findViewById(R.id.locationText);
+        locationtext.setText(intent.getStringExtra("location"));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
                 Log.d(TAG, "권한 설정 완료");
@@ -181,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("postData failed", "======================================");
                     }
                 });
+                Log.d("title", title.getText()+"");
+                if (title.getText() != null)
+                    onBackPressed();
+                else {
+                    Toast.makeText(MainActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -228,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // 변환된 이미지 사용
                 imageView.setImageBitmap(image);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Toast.makeText(this, "오류발생: " + e.getLocalizedMessage(),
                         Toast.LENGTH_LONG).show();
             }
