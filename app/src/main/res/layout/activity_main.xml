@@ -34,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_margin="10dp"
+        android:text=""
         android:background="@drawable/edittext_rounddesu"
         android:paddingLeft="10dp"
         android:hint="제목" />
