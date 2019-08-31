@@ -92,7 +92,6 @@
 
         <ImageView
             android:id="@+id/camera_view"
-<<<<<<< HEAD
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:srcCompat="@tools:sample/avatars"
@@ -103,13 +102,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Button" />
-=======
-            android:layout_width="184dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="210dp"
-            tools:srcCompat="@tools:sample/avatars" />
->>>>>>> 5c8adad6af5a80d27de7c2f1761bb2d0c57e4592
-
         <Button
             android:id="@+id/camera_button"
             android:layout_width="98dp"
