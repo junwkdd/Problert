@@ -1,25 +1,11 @@
 package com.example.problert;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,24 +15,33 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
 
-
+    
     final String TAG = getClass().getSimpleName();
     ImageView imageView;
     final static int TAKE_PICTURE = 1;
@@ -56,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
 
+    Uri selectedImageUri;
+
     Context context;
-    private File imageUri;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -138,7 +134,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("lat:", lat+"");
         Log.d("lng:", lng+"");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        TextView locationtext = (TextView) findViewById(R.id.locationText);
+        locationtext.setText(intent.getStringExtra("location"));
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
                 Log.d(TAG, "권한 설정 완료");
             } else {
@@ -187,6 +187,24 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("postData failed", "======================================");
                     }
                 });
+
+                File file = new File(getRealPathFromUri(context, selectedImageUri));
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file.getName(), requestFile);
+
+                retrofitService.uploadImage(body).enqueue(new Callback<Data>() {
+                    @Override
+                    public void onResponse(Call<Data> call, Response<Data> response) {
+                        if (response.isSuccessful()) {
+                            Log.d("서지우의 고생은", "여기서 결실을 맺는다.");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Data> call, Throwable t) {
+                        Log.d("서지우의 고생", t.getMessage());
+                        Log.d("서지우의 고생은", "이제 시작이다.");
+                    }
+                });
             }
         });
     }
@@ -218,61 +236,24 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         if(requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//            Uri selectedImageUri = data.getData();
-//            imageview.setImageURI(selectedImageUri);
-            try {
-                // 비트맵 이미지로 가져온다
-                String imagePath = imageUri.getPath();
-                Bitmap image = BitmapFactory.decodeFile(imagePath);
-
-                // 이미지를 상황에 맞게 회전시킨다
-                ExifInterface exif = new ExifInterface(imagePath);
-                int exifOrientation = exif.getAttributeInt(
-                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                int exifDegree = exifOrientationToDegress(exifOrientation);
-                image = rotate(image, exifDegree);
-
-                // 변환된 이미지 사용
-                imageView.setImageBitmap(image);
-            } catch(Exception e) {
-                Toast.makeText(this, "오류발생: " + e.getLocalizedMessage(),
-                        Toast.LENGTH_LONG).show();
-            }
+            selectedImageUri = data.getData();
+            imageview.setImageURI(selectedImageUri);
+            Log.d("서지우의 고생은 결실을 맺을까?", String.valueOf(selectedImageUri));
         }
     }
 
-    private int exifOrientationToDegress(int exifOrientation) {
-        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        } return 0;
-    }
-
-    public Bitmap rotate(Bitmap bitmap, int degress){
-        if(degress != 0 && bitmap != null)
-        {
-            Matrix m = new Matrix();
-            m.setRotate(degress, (float) bitmap.getWidth() / 2,
-                    (float) bitmap.getHeight() / 2);
-
-            try
-            {
-                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), m, true);
-                if(bitmap != converted)
-                {
-                    bitmap.recycle();
-                    bitmap = converted;
-                }
-            }
-            catch(OutOfMemoryError ex)
-            {
-                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
-        return bitmap;
     }
 }
