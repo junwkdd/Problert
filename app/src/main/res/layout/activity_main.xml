@@ -83,7 +83,7 @@
 
         <TextView
             android:id="@+id/locationText2"
-            android:text="img file"
+            android:text="img"
             android:gravity="center"
             android:layout_width="140dp"
             android:layout_height="100dp"
