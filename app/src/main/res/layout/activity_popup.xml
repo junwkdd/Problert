@@ -47,8 +47,9 @@
                 android:alpha="0.87"
                 android:gravity="center"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
 
+            U89x='\PJ/MTFH8
             <TextView
                 android:id="@+id/locationText"
                 android:layout_width="match_parent"

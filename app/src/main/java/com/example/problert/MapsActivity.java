@@ -82,16 +82,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 if (datas != null) {
                                     for (int i = 0; i < datas.size(); i++) {
                                         Log.e("data" + i, datas.get(i).getCoordinate().getCoordinates()[0] + "");
-                                        try {
-                                            mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
-                                                .title(datas.get(i).getTitle())
-                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
-                                                .snippet(findAddress(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
-                                            );
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
+                                        mMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(datas.get(i).getCoordinate().getCoordinates()[1], datas.get(i).getCoordinate().getCoordinates()[0]))
+                                            .title(datas.get(i).getTitle())
+                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluepin))
+                                            .snippet(datas.get(i).getDescription())
+                                        );
                                     }
                                     Log.e("getData2 end", "======================================");
                                 }
@@ -105,15 +101,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
 
-                    try {
-                        mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(lat,lng))
-                            .title("내 위치")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
-                            .snippet(findAddress(lat, lng)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat,lng))
+                        .title("내 위치")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin))
+                        .snippet("현재 당신의 위치입니다!"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lng)));
                     // 카메라 줌
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f)); //.zoomTo(17.0f));
@@ -138,12 +130,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(marker.getPosition().latitude-0.0007, marker.getPosition().longitude)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
 //        Toast.makeText(this, marker.getTitle()+"\n"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
-        Log.d("move1", marker.getPosition()+"");
         Intent intent = new Intent(this, PopupActivity.class);
         try {
             intent.putExtra("title", marker.getTitle());
             intent.putExtra("location", findAddress(marker.getPosition().latitude, marker.getPosition().longitude));
-            intent.putExtra("getSnippet", marker.getSnippet());
+            intent.putExtra("description", marker.getSnippet());
         } catch (IOException e) {
             e.printStackTrace();
         }
