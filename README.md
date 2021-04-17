@@ -16,3 +16,7 @@ DB : MongoDB<br>
 ### 현재 위치를 기준으로 이슈를 작성할 수 있는 Write Activity 입니다.
 <img width = "200" height = "400" src = "https://user-images.githubusercontent.com/41174265/115127757-021a4c00-a014-11eb-953c-a990037576cc.png">
 
+## GIF
+### Problert 기능  
+<img width = "600" height = "400" src = "https://user-images.githubusercontent.com/41174265/115128313-e3b64f80-a017-11eb-95ae-a3988c253b8a.gif">
+
